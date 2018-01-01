@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+base=docker.io/udoprog/dev
+docker_build_args=""
+
+if [[ ! -z $NO_CACHE ]]; then
+    docker_build_args="$docker_build_args --no-cache"
+fi
+
+docker build $docker_build_args -t $base:full $PWD
+docker build $docker_build_args -t $base:norust \
+    --build-arg EXCLUDE_TARGETS=%/rust.mk \
+    $PWD
